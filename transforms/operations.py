@@ -498,7 +498,7 @@ class Solarize(torch.nn.Module):
         self.op_name = 'Solarize'
 
     def _magnitude_to_arg(self, magnitude):
-        threshold = (self.max_val - self.min_val) * magnitude + self.min_val
+        threshold = 256. - ((self.max_val - self.min_val) * magnitude + self.min_val)
         return threshold
 
     def forward(self, x, magnitude):
@@ -532,8 +532,8 @@ class Posterize(torch.nn.Module):
         self.op_name = 'Posterize'
 
     def _magnitude_to_arg(self, magnitude):
-        # return torch.tensor((self.max_val - self.min_val) * magnitude + self.min_val, requires_grad=True).to(torch.int32)   # 类似原来的实现
-        return (self.max_val - self.min_val) * magnitude + self.min_val                     # 当前计算方法特有
+        # return torch.tensor((self.max_val - self.min_val) * magnitude + self.min_val, requires_grad=True).to(torch.int32)
+        return (self.max_val - self.min_val) * magnitude + self.min_val                     
 
     def forward(self, x, magnitude):
         bits = self._magnitude_to_arg(magnitude)   # 类似原来的实现
